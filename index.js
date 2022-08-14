@@ -94,6 +94,11 @@ client.on('message', (channel, tags, message, self) => {
   }
   if(command === 'help') {
     client.say(channel, `https://docs.andrewdragon.dev/twitch/commands`)
+      .then(() => {
+        console.log(`Help command succeeded.`)
+      }).catch((err) => {
+        console.log(`Help command failed. ${err}`)
+      });
   }
 });
 
