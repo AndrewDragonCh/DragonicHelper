@@ -1,0 +1,11 @@
+{
+  "name": "twitchbot",
+  "version": "1.0.0",
+  "description": "Twitch bot for my Twitch channel",
+  "main": "index.js",
+  "author": "AndrewDragon",
+  "license": "ISC",
+  "dependencies": {
+    "tmi.js": "^1.8.5"
+  }
+}
