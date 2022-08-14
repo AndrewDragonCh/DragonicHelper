@@ -1,5 +1,4 @@
 const tmi = require('tmi.js');
-const { botUsername, botPassword } = require('./config.json')
 
 const client = new tmi.Client({
 	connection: {
@@ -7,8 +6,8 @@ const client = new tmi.Client({
 		secure: true
 	},
 	identity: {
-		username: botUsername,
-		password: botPassword
+		username: process.env.botUsername,
+		password: process.env.botPassword
 	},
 	channels: [ 'AndrewDragonCh' ]
 });
