@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "AndrewDragon",
   "license": "ISC",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "tmi.js": "^1.8.5"
   }
