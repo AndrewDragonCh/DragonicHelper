@@ -1,10 +1,14 @@
 const tmi = require('tmi.js');
+require('dotenv').config()
 
 const client = new tmi.Client({
 	connection: {
 		reconnect: true,
 		secure: true
 	},
+  options: {
+    clientId: process.env.clientId,
+  },
 	identity: {
 		username: process.env.botUsername,
 		password: process.env.botPassword
@@ -28,23 +32,19 @@ client.on('message', (channel, tags, message, self) => {
   const args = message.slice(1).split(' ');
   const command = args.shift().toLowerCase();
 
-	if(command === 'restream') {
-		client.say(channel, `I'll be streaming on both YouTube and Twitch for a few weeks to see if I like Twitch. This doesn't mean I won't use YouTube, just may stream on Twitch instead.`)
-      .then(() => {
-        console.log(`Restream command succeeded.`)
-      }).catch((err) => {
-        console.log(`Restream command failed. ${err}`)
-      });
-	}
   if(command === 'ping') {
     client.ping()
       .then((data) => {
-        client.say(channel, `Ping: ${data*1000}ms`)
+        client.say(channel, `Ping: ${data*1000}ms`).then(() => {
+          console.log(`Ping command succeeded.`)
+        }).catch((err) => {
+          console.log(`Ping command failed. ${err}`)
+        });
       }).catch((err) => {
         console.log(`Failed to execute ping command. ${err}`)
       });
   }
-  if(command === 'specs') {
+  if(command === 'specs' || command === 'pc') {
     client.say(channel, `Find my specs at https://pcpartpicker.com/user/AndrewDragonCh/saved/dFDNzy`)
       .then(() => {
         console.log(`Specs command succeeded.`)
@@ -53,7 +53,7 @@ client.on('message', (channel, tags, message, self) => {
       });
   }
   if(command === 'headphones' || command === 'headset') {
-    client.say(channel, `I use Razer Nari Essentials. Find them at https://www.amazon.com/dp/B07HZ5N8QT`)
+    client.say(channel, `I use Razer Nari Essentials. Find it at https://www.amazon.com/dp/B07HZ5N8QT`)
       .then(() => {
         console.log(`Headphones command succeeded.`)
       }).catch((err) => {
@@ -68,7 +68,7 @@ client.on('message', (channel, tags, message, self) => {
         console.log(`Mouse command failed. ${err}`)
       });
   }
-  if(command === 'keyboard') {
+  if(command === 'keyboard' || command === 'kb') {
     client.say(channel, `I use the Corsair K70 MK.2 SE. Find them at https://www.amazon.com/dp/B07D5S24BP`)
       .then(() => {
         console.log(`Keyboard command succeeded.`)
@@ -77,7 +77,7 @@ client.on('message', (channel, tags, message, self) => {
       });
   }
   if(command === 'monitor') {
-    client.say(channel, `I use a generic 1080p60 monitor from Acer. I also have 2 other monitors flanking it.`)
+    client.say(channel, `My main monitor a generic 1080p60 monitor from Acer. To the left of it, I have a second Dell 1080p60 monitor. I also use a 8" Tablet as a third display.`)
       .then(() => {
         console.log(`Monitor command succeeded.`)
       }).catch((err) => {

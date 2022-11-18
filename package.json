@@ -9,6 +9,7 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "tmi.js": "^1.8.5"
   }
 }
