@@ -17,12 +17,12 @@ const client = new tmi.Client({
 });
 
 client.on("connecting", (address, port) => {
-  console.log(`${address}:${port}`)
+  console.log(`Connecting to ${address}:${port}`)
 });
 
 client.connect()
   .then((data) => {
-    console.log(`Connected to ${data} successfully!`)
+    console.log(`Connected to ${data[0]}:${data[1]}`)
   }).catch((err) => {
     console.log(`Failed to connect. ${err}`)
   });
@@ -35,17 +35,14 @@ client.on('message', (channel, tags, message, self) => {
   if(command === 'ping') {
     client.ping()
       .then((data) => {
-        client.say(channel, `Ping: ${data*1000}ms`).then(() => {
-          console.log(`Ping command succeeded.`)
-        }).catch((err) => {
-          console.log(`Ping command failed. ${err}`)
-        });
+        client.say(channel, `Ping: ${data*1000}ms`)
+        console.log(`Ping command succeeded.`)
       }).catch((err) => {
         console.log(`Failed to execute ping command. ${err}`)
       });
   }
   if(command === 'specs' || command === 'pc') {
-    client.say(channel, `Find my specs at https://pcpartpicker.com/user/AndrewDragonCh/saved/dFDNzy`)
+    client.say(channel, `@${tags.username} https://pcpartpicker.com/user/AndrewDragonCh/saved/QR24gs`)
       .then(() => {
         console.log(`Specs command succeeded.`)
       }).catch((err) => {
@@ -53,7 +50,7 @@ client.on('message', (channel, tags, message, self) => {
       });
   }
   if(command === 'headphones' || command === 'headset') {
-    client.say(channel, `I use Razer Nari Essentials. Find it at https://www.amazon.com/dp/B07HZ5N8QT`)
+    client.say(channel, `@${tags.username} Razer Nari Essentials or Apple AirPods Pro 2`)
       .then(() => {
         console.log(`Headphones command succeeded.`)
       }).catch((err) => {
@@ -61,7 +58,7 @@ client.on('message', (channel, tags, message, self) => {
       });
   }
   if(command === 'mouse') {
-    client.say(channel, `I use a Glorious Model O. Find them at https://www.amazon.com/dp/B07MGDRBBF`)
+    client.say(channel, `@${tags.username} Razer Viper V2 Pro`)
       .then(() => {
         console.log(`Mouse command succeeded.`)
       }).catch((err) => {
@@ -69,7 +66,7 @@ client.on('message', (channel, tags, message, self) => {
       });
   }
   if(command === 'keyboard' || command === 'kb') {
-    client.say(channel, `I use the Corsair K70 MK.2 SE. Find them at https://www.amazon.com/dp/B07D5S24BP`)
+    client.say(channel, `@${tags.username} Corsair K65 Mini in White.`)
       .then(() => {
         console.log(`Keyboard command succeeded.`)
       }).catch((err) => {
@@ -77,7 +74,7 @@ client.on('message', (channel, tags, message, self) => {
       });
   }
   if(command === 'monitor') {
-    client.say(channel, `My main monitor a generic 1080p60 monitor from Acer. To the left of it, I have a second Dell 1080p60 monitor. I also use a 8" Tablet as a third display.`)
+    client.say(channel, `@${tags.username} Main is an Acer XF273 1080p 165hz. Second and third are both 1080p 60hz.`)
       .then(() => {
         console.log(`Monitor command succeeded.`)
       }).catch((err) => {
@@ -85,7 +82,7 @@ client.on('message', (channel, tags, message, self) => {
       });
   }
   if(command === 'mousepad') {
-    client.say(channel, `I use a SteelSeries QcK Prism. Find them at https://www.amazon.com/dp/B07JQ2TK86`)
+    client.say(channel, `@${tags.username} HyperX Extended Mousepad`)
       .then(() => {
         console.log(`Mousepad command succeeded.`)
       }).catch((err) => {
@@ -93,7 +90,7 @@ client.on('message', (channel, tags, message, self) => {
       });
   }
   if(command === 'help') {
-    client.say(channel, `https://docs.andrewdragon.dev/twitch/commands`)
+    client.say(channel, `@${tags.username} I need to remake this...`)
       .then(() => {
         console.log(`Help command succeeded.`)
       }).catch((err) => {
