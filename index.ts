@@ -20,16 +20,24 @@ client.on('message', e => {
         console.log(`Specs command failed. ${err}`)
       });
   }
-  if(command === 'headphones' || command === 'headset') {
-    client.say(channel, `@${user.login} Razer Nari Essentials or Apple AirPods Pro 2`)
+  if(command === 'headphones' || command === 'headset' || command === 'inears') {
+    client.say(channel, `@${user.login} Razer Nari Essentials, Linsoul 7Hz x Crinacle Zero:2, Apple AirPods Pro 2`)
       .then(() => {
         console.log(`Headphones command succeeded.`)
       }).catch((err) => {
         console.log(`Headphones command failed. ${err}`)
       });
   }
+  if(command === 'mic' || command === 'microphone') {
+    client.say(channel, `@${user.login} Audio Technica AT2035. Interface is a Behringer U-PHORIA UMC1820.`)
+      .then(() => {
+        console.log(`Microphone command succeeded.`)
+      }).catch((err) => {
+        console.log(`Microphone command failed. ${err}`)
+      });
+  }
   if(command === 'mouse') {
-    client.say(channel, `@${user.login} Razer Viper V2 Pro`)
+    client.say(channel, `@${user.login} Razer Viper V3 Pro`)
       .then(() => {
         console.log(`Mouse command succeeded.`)
       }).catch((err) => {
@@ -37,7 +45,7 @@ client.on('message', e => {
       });
   }
   if(command === 'keyboard' || command === 'kb') {
-    client.say(channel, `@${user.login} 	Asus ROG Strix Scope II 96`)
+    client.say(channel, `@${user.login} Asus ROG Strix Scope II 96`)
       .then(() => {
         console.log(`Keyboard command succeeded.`)
       }).catch((err) => {
@@ -45,7 +53,7 @@ client.on('message', e => {
       });
   }
   if(command === 'monitor') {
-    client.say(channel, `@${user.login} Main is an Acer XF273 1080p 165hz. Second and third are both 1080p 60hz.`)
+    client.say(channel, `@${user.login} Main is a Dell Alienware AW3225QF 4k 240hz. Second is an Acer XF273 S 1080p 165hz. Third is a generic Dell 1080p 60hz.`)
       .then(() => {
         console.log(`Monitor command succeeded.`)
       }).catch((err) => {
@@ -53,7 +61,7 @@ client.on('message', e => {
       });
   }
   if(command === 'mousepad') {
-    client.say(channel, `@${user.login} HyperX Extended Mousepad`)
+    client.say(channel, `@${user.login} SteelSeries QcK XL Performance Speed`)
       .then(() => {
         console.log(`Mousepad command succeeded.`)
       }).catch((err) => {
