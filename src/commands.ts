@@ -52,3 +52,11 @@ export const commands: Command[] = [
     response: `${testFunction()}`,
   },
 ];
+
+export function findCommand(text: string): Command | undefined {
+  const lower = text.toLowerCase().trim();
+
+  return commands.find((cmd) =>
+    cmd.trigger.some((t) => lower === t || lower === `!${t}`),
+  );
+}

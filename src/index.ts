@@ -1,11 +1,25 @@
-import tmi from "@tmi.js/chat";
+import { promises as fs } from "node:fs";
+import { ApiClient } from "@twurple/api";
+import { RefreshingAuthProvider } from "@twurple/auth";
+import { ChatClient } from "@twurple/chat";
+
+import { botSay, initBotSay } from "./botSay";
 import { commands } from "./commands";
 
-const token = process.env.TWITCH_OAUTH_TOKEN;
-const channel = process.env.CHANNEL;
+const tokenData = JSON.parse(await fs.readFile("./tokens.json", "utf-8"));
 
-if (!token) {
-  console.error("TWITCH_OAUTH_TOKEN not found in .env! Exiting");
+const clientId = process.env.TWITCH_CLIENT_ID!;
+const clientSecret = process.env.TWITCH_CLIENT_SECRET!;
+const channel = process.env.CHANNEL;
+const botUserId = process.env.TWITCH_BOT_ID;
+
+if (!clientId) {
+  console.error("TWITCH_CLIENT_ID not found in .env! Exiting");
+  process.kill(process.pid);
+}
+
+if (!clientSecret) {
+  console.error("TWITCH_CLIENT_SECRET not found in .env! Exiting");
   process.kill(process.pid);
 }
 
@@ -14,30 +28,57 @@ if (!channel) {
   process.kill(process.pid);
 }
 
-const client = new tmi.Client({
-  token: token,
+if (!botUserId) {
+  console.error("TWITCH_BOT_ID not found in .env! Exiting");
+  process.kill(process.pid);
+}
+
+const authProvider = new RefreshingAuthProvider({
+  clientId,
+  clientSecret,
+});
+
+authProvider.onRefresh(
+  async (_userId, newTokenData) =>
+    await fs.writeFile(
+      `./tokens.json`,
+      JSON.stringify(newTokenData, null, 4),
+      "utf-8",
+    ),
+);
+
+await authProvider.addUserForToken(tokenData, ["chat", "user:write:chat", "user:bot"]);
+
+const apiClient = new ApiClient({ authProvider: authProvider });
+
+initBotSay(apiClient, botUserId!);
+
+const chatClient = new ChatClient({
+  authProvider,
   channels: [`${channel}`],
 });
 
-client.connect();
+chatClient.connect();
 
-client.on("message", (e) => {
-  const { channel, user, message } = e;
-  if (user.isBot || !message || !message.text || !message.text.startsWith("!"))
-    return;
-  const userInput = message.text.trim().replace(/^!+/, "").trim().toLowerCase();
+chatClient.onAuthenticationSuccess(() => {
+  console.log("Connected and authenticated");
+});
+
+apiClient.chat.sendChatMessageAsApp(botUserId!, 268589257, "message")
+
+chatClient.onMessage(async (_channel, user, text, msg) => {
+  if (msg.userInfo.isMod === false && msg.userInfo.userId === botUserId) return;
+  if (!text.startsWith("!")) return;
+  const userInput = text.trim().replace(/^!+/, "").trim().toLowerCase();
   const userCommand = commands.find((cmd) =>
     cmd.trigger.some((trigger) => userInput.includes(trigger.toLowerCase())),
   );
-
   if (userCommand) {
-    client
-      .say(channel, `@${user.login} ${userCommand.response}`)
-      .then(() => {
-        console.log(`${userCommand.name} command succeeded.`);
-      })
-      .catch((err) => {
-        console.log(`${userCommand.name} command failed. ${err}`);
-      });
+    await botSay(msg.channelId!, `@${user} ${userCommand.response}`);
+    console.log(`${userCommand.name} command succeeded.`);
+
+    //   .catch((err) => {
+    //     console.log(`${userCommand.name} command failed. ${err}`);
+    //   });
   }
 });
