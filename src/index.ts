@@ -64,8 +64,6 @@ chatClient.onAuthenticationSuccess(() => {
   console.log("Connected and authenticated");
 });
 
-apiClient.chat.sendChatMessageAsApp(botUserId!, 268589257, "message")
-
 chatClient.onMessage(async (_channel, user, text, msg) => {
   if (msg.userInfo.isMod === false && msg.userInfo.userId === botUserId) return;
   if (!text.startsWith("!")) return;
