@@ -5,7 +5,7 @@ export type Command = {
 };
 
 function testFunction() {
-  return "Pong"
+  return "Pong";
 }
 
 export const commands: Command[] = [
@@ -49,6 +49,6 @@ export const commands: Command[] = [
   {
     name: "test",
     trigger: ["ping"],
-    response: `${testFunction()}`
-  }
+    response: `${testFunction()}`,
+  },
 ];
