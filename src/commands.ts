@@ -1,12 +1,8 @@
 export type Command = {
   name: string;
   trigger: string[];
-  response: string;
+  response: string | (() => string | Promise<string>);
 };
-
-function testFunction() {
-  return "Pong";
-}
 
 export const commands: Command[] = [
   {
@@ -39,17 +35,12 @@ export const commands: Command[] = [
     name: "monitor",
     trigger: ["monitor", "display"],
     response:
-      "Main is a Dell Alienware AW3225QF 4k 240hz. Second is an Acer XF273 S 1080p 165hz. Third is a generic Dell 1080p 60hz mounted verticly.",
+      "Main is a Dell Alienware AW3225QF 4k 240hz. Second is an Acer XF273 S 1080p 165hz. Third is a generic Dell 1080p 60hz mounted vertically.",
   },
   {
     name: "mousepad",
     trigger: ["mousepad"],
     response: "SteelSeries QcK XL Performance Speed",
-  },
-  {
-    name: "test",
-    trigger: ["ping"],
-    response: `${testFunction()}`,
   },
 ];
 

@@ -4,7 +4,7 @@ import { RefreshingAuthProvider } from "@twurple/auth";
 import { ChatClient } from "@twurple/chat";
 
 import { botSay, initBotSay } from "./botSay";
-import { commands } from "./commands";
+import { findCommand } from "./commands";
 
 const tokenData = JSON.parse(await fs.readFile("./tokens.json", "utf-8"));
 
@@ -47,7 +47,11 @@ authProvider.onRefresh(
     ),
 );
 
-await authProvider.addUserForToken(tokenData, ["chat", "user:write:chat", "user:bot"]);
+await authProvider.addUserForToken(tokenData, [
+  "chat",
+  "user:write:chat",
+  "user:bot",
+]);
 
 const apiClient = new ApiClient({ authProvider: authProvider });
 
@@ -65,18 +69,16 @@ chatClient.onAuthenticationSuccess(() => {
 });
 
 chatClient.onMessage(async (_channel, user, text, msg) => {
-  if (msg.userInfo.isMod === false && msg.userInfo.userId === botUserId) return;
+  if (msg.userInfo.userId === botUserId) return;
   if (!text.startsWith("!")) return;
   const userInput = text.trim().replace(/^!+/, "").trim().toLowerCase();
-  const userCommand = commands.find((cmd) =>
-    cmd.trigger.some((trigger) => userInput.includes(trigger.toLowerCase())),
-  );
+  const userCommand = findCommand(userInput);
   if (userCommand) {
-    await botSay(msg.channelId!, `@${user} ${userCommand.response}`);
-    console.log(`${userCommand.name} command succeeded.`);
-
-    //   .catch((err) => {
-    //     console.log(`${userCommand.name} command failed. ${err}`);
-    //   });
+    try {
+      await botSay(msg.channelId!, `@${user} ${userCommand.response}`);
+      console.log(`${userCommand.name} command succeeded.`);
+    } catch (err) {
+      console.error(`${userCommand.name} command failed:`, err);
+    }
   }
 });
