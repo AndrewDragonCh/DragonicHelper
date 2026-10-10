@@ -1,12 +1,12 @@
-import { promises as fs } from "node:fs";
 import { ApiClient } from "@twurple/api";
 import { RefreshingAuthProvider } from "@twurple/auth";
 import { ChatClient } from "@twurple/chat";
 
-import { botSay, initBotSay } from "./botSay";
-import { findCommand } from "./commands";
+import { botSay, initBotSay } from "./botSay.ts";
+import { findCommand } from "./commands.ts";
+import console from "node:console";
 
-const tokenData = JSON.parse(await fs.readFile("./tokens.json", "utf-8"));
+const tokenData = JSON.parse(await Deno.readTextFile("./tokens.json"));
 
 const clientId = process.env.TWITCH_CLIENT_ID!;
 const clientSecret = process.env.TWITCH_CLIENT_SECRET!;
@@ -40,10 +40,9 @@ const authProvider = new RefreshingAuthProvider({
 
 authProvider.onRefresh(
   async (_userId, newTokenData) =>
-    await fs.writeFile(
+    await Deno.writeTextFile(
       `./tokens.json`,
       JSON.stringify(newTokenData, null, 4),
-      "utf-8",
     ),
 );
 

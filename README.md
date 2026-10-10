@@ -1,15 +1,17 @@
-# twitchbot
+# Dragonic Helper
 
 To install dependencies:
 
 ```bash
-bun install
+deno i
 ```
 
 To run:
 
 ```bash
-bun run index.ts
+deno run start
 ```
 
-This project was created using `bun init` in bun v1.4.2. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+## Linting and Formatting
+
+`biome` is required to be installed

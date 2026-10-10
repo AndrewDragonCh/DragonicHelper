@@ -1,0 +1,21 @@
+{
+  "name": "dragonic-helper",
+  "version": "2.0.0",
+  "license": "MIT",
+  "exports": "./src/index.ts",
+  "tasks": {
+    "start": "deno run --allow-all --env-file=.env src/index.ts",
+    "check": "biome check",
+    "lint": "biome lint",
+    "format": "biome format"
+  },
+  "imports": {
+    "@twurple/api": "npm:@twurple/api@^8.2.0",
+    "@twurple/auth": "npm:@twurple/auth@^8.2.0",
+    "@twurple/chat": "npm:@twurple/chat@^8.2.0"
+  },
+  "compilerOptions": {
+    "lib": ["deno.window"],
+    "strict": true
+  }
+}
